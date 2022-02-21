@@ -5,15 +5,15 @@
 import pydirectinput
 import keyboard
 import time
-def mouse_move(x,y):
-    x = int(x*2.4)
-    y = int(y*1.8)
-    #j, k = pydirectinput.position()
-    print("go to mouse_move")
-    if keyboard.read_key() == 'i' and flag==0:
-        print("move_x=={},move_y=={}".format(x,y))
-        # print(pydirectinput.size())
-        pydirectinput.moveTo(x,y)
-        # time.sleep(0.5)
-        # pydirectinput.moveRel(x-960,y-540)
+class Mouse:
+    def __init__(self):
+        print("start init")
+    def move(self,x,y):
+        # from 640*480 => 1536*864
+        screen_x = int(x * 2.4)
+        screen_y = int(y * 1.8)
+        if keyboard.read_key() == 'i':
+            print("move_x=={},move_y=={}".format(x,y))
+            # 672=<x<=864     360=<y<=504   in 1536*864
+            pydirectinput.moveTo(screen_x,screen_y)
 
