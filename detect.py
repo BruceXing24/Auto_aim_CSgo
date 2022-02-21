@@ -169,8 +169,12 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
 
                 # Write results
+                
+                #my codes start---------------------------------------
                 cor_x = 0
                 cor_y = 0
+                control = mouse_control.Mouse()
+                # my codes end----------------------------------------
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
@@ -184,8 +188,8 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                         annotator.box_label(xyxy, label, color=colors(c, True))
                         if save_crop:
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-                    # my codes start
-
+                    
+                    # my codes start ----------------------------
                     center_x = (xyxy[0]+xyxy[2])/2
                     center_y = (xyxy[1]+xyxy[3])/2
                     print(label)
@@ -193,16 +197,13 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                     if label[0:4]=='head':
                         print(float(label[5:-1]))
                         # print('x=={},y=={}'.format(center_x,center_y))
-                        cor_x= int(center_x)
-                        cor_y =int(center_y)
-                thread.start_new_thread(mouse_control.mouse_move, (cor_x, cor_y))
-                    # mouse_control.mouse_move(x,y)
-
-                    #     mouse_control.mouse_move(center_x, center_y)
-                    # else:
-                    #     continue
-
-                    # my codes endiii
+                        x= int(center_x)
+                        y =int(center_y)
+                        if x>=280 and x<=360 and y>=200 and y <=280:
+                            cor_x = x
+                            cor_y = y
+                    thread.start_new_thread(control.move, (cor_x, cor_y))
+                    # my codes end------------------------
 
 
 
